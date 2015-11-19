@@ -22,38 +22,6 @@ class ICBM152Dataset(HttpDataset):
         standard location. Default: None (meaning: default)
     url: string, optional
         Download URL of the dataset. Overwrite the default URL.
-
-    Returns
-    -------
-    data: sklearn.datasets.base.Bunch
-        dictionary-like object, interest keys are:
-        "t1", "t2", "t2_relax", "pd": anatomical images obtained with the
-        given modality (resp. T1, T2, T2 relaxometry and proton
-        density weighted). Values are file paths.
-        "gm", "wm", "csf": segmented images, giving resp. gray matter,
-        white matter and cerebrospinal fluid. Values are file paths.
-        "eye_mask", "face_mask", "mask": use these images to mask out
-        parts of mri images. Values are file paths.
-
-    References
-    ----------
-    VS Fonov, AC Evans, K Botteron, CR Almli, RC McKinstry, DL Collins
-    and BDCG, "Unbiased average age-appropriate atlases for pediatric studies",
-    NeuroImage,Volume 54, Issue 1, January 2011
-
-    VS Fonov, AC Evans, RC McKinstry, CR Almli and DL Collins,
-    "Unbiased nonlinear average age-appropriate brain templates from birth
-    to adulthood", NeuroImage, Volume 47, Supplement 1, July 2009, Page S102
-    Organization for Human Brain Mapping 2009 Annual Meeting.
-
-    DL Collins, AP Zijdenbos, WFC Baaré and AC Evans,
-    "ANIMAL+INSECT: Improved Cortical Structure Segmentation",
-    IPMI Lecture Notes in Computer Science, 1999, Volume 1613/1999, 210–223
-
-    Notes
-    -----
-    For more information about this dataset's structure:
-    http://www.bic.mni.mcgill.ca/ServicesAtlases/ICBM152NLin2009
     """
 
     def fetch(self, url=None, resume=True, force=False, verbose=1):

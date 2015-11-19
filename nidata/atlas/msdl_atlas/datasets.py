@@ -32,23 +32,6 @@ class MSDLDataset(HttpDataset):
         - 'labels': str. Path to csv file containing labels.
         - 'maps': str. path to nifti file containing regions definition.
 
-    References
-    ----------
-    :Download:
-        https://team.inria.fr/parietal/files/2015/01/MSDL_rois.zip
-
-    :Paper to cite:
-        `Multi-subject dictionary learning to segment an atlas of brain
-        spontaneous activity <http://hal.inria.fr/inria-00588898/en>`_
-        Gaël Varoquaux, Alexandre Gramfort, Fabian Pedregosa, Vincent Michel,
-        Bertrand Thirion. Information Processing in Medical Imaging, 2011,
-        pp. 562-573, Lecture Notes in Computer Science.
-
-    :Other references:
-        `Learning and comparing functional connectomes across subjects
-        <http://hal.inria.fr/hal-00812911/en>`_.
-        Gaël Varoquaux, R.C. Craddock NeuroImage, 2013.
-
     """
     def fetch(self, url=None, resume=True, verbose=1):
         url = 'https://team.inria.fr/parietal/files/2015/01/MSDL_rois.zip'

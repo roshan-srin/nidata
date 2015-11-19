@@ -28,7 +28,6 @@ class MNI152Dataset(HttpDataset):
     nonlinear average age-appropriate brain templates from birth to adulthood,
     NeuroImage, Volume 47, Supplement 1, July 2009, Page S102 Organization for
     Human Brain Mapping 2009 Annual Meeting, DOI: 10.1016/S1053-8119(09)70884-5
-
     """
     def fetch(self, url=None, resume=True, verbose=1):
         files = (('avg152T1_brain.nii.gz',

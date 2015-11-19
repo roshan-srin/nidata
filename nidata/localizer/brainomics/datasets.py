@@ -352,10 +352,6 @@ class BrainomicsDataset(HttpDataset):
                                          verbose=1):
         """Fetch calculation task contrast maps from the localizer.
 
-        This function is only a caller for the fetch_localizer_contrasts in order
-        to simplify examples reading and understanding.
-        The 'calculation (auditory and visual cue)' contrast is used.
-
         Parameters
         ----------
         n_subjects: int, optional

@@ -28,67 +28,7 @@ class NyuRestDataset(HttpDataset):
         Path of the data directory. Used to force data storage in a specified
         location. Default: None
 
-    Returns
-    -------
-    data: sklearn.datasets.base.Bunch
-        Dictionary-like object, the interest attributes are :
-        'func': string list. Paths to functional images.
-        'anat_anon': string list. Paths to anatomic images.
-        'anat_skull': string. Paths to skull-stripped images.
-        'session': numpy array. List of ids corresponding to images sessions.
-
-    Notes
-    ------
-    This dataset is composed of 3 sessions of 26 participants (11 males).
-    For each session, three sets of data are available:
-
-    - anatomical:
-
-      * anonymized data (defaced thanks to BIRN defacer)
-      * skullstripped data (using 3DSkullStrip from AFNI)
-
-    - functional
-
-    For each participant, 3 resting-state scans of 197 continuous EPI
-    functional volumes were collected :
-
-    - 39 slices
-    - matrix = 64 x 64
-    - acquisition voxel size = 3 x 3 x 3 mm
-
-    Sessions 2 and 3 were conducted in a single scan session, 45 min
-    apart, and were 5-16 months after Scan 1.
-
-    All details about this dataset can be found here :
-    http://cercor.oxfordjournals.org/content/19/10/2209.full
-
-    References
-    ----------
-    :Documentation:
-        http://www.nitrc.org/docman/?group_id=274
-
-    :Download:
-        http://www.nitrc.org/frs/?group_id=274
-
-    :Paper to cite:
-        `The Resting Brain: Unconstrained yet Reliable
-        <http://cercor.oxfordjournals.org/content/19/10/2209>`_
-        Z. Shehzad, A.M.C. Kelly, P.T. Reiss, D.G. Gee, K. Gotimer,
-        L.Q. Uddin, S.H. Lee, D.S. Margulies, A.K. Roy, B.B. Biswal,
-        E. Petkova, F.X. Castellanos and M.P. Milham.
-
-    :Other references:
-        * `The oscillating brain: Complex and Reliable
-          <http://dx.doi.org/10.1016/j.neuroimage.2009.09.037>`_
-          X-N. Zuo, A. Di Martino, C. Kelly, Z. Shehzad, D.G. Gee,
-          D.F. Klein, F.X. Castellanos, B.B. Biswal, M.P. Milham
-
-        * `Reliable intrinsic connectivity networks: Test-retest
-          evaluation using ICA and dual regression approach
-          <http://dx.doi.org/10.1016/j.neuroimage.2009.10.080>`_,
-          X-N. Zuo, C. Kelly, J.S. Adelstein, D.F. Klein,
-          F.X. Castellanos, M.P. Milham
-
+    
     """
 
     def fetch(self, n_subjects=None, sessions=[1], resume=True,
