@@ -21,16 +21,6 @@ class Haxby2001Dataset(HttpDataset):
     data_dir: string, optional
         Path of the data directory. Used to force data storage in a specified
         location. Default: None
-
-<<<<<<< HEAD
-=======
-    
->>>>>>> 426d4f5... DOC: more docstring changes.
-    Parameters
-    ----------
-    data_dir: string, optional
-        Path of the data directory. Used to force data storage in a specified
-        location. Default: None
     n_subjects: int, optional
         Number of subjects, from 1 to 6.
 
@@ -52,11 +42,6 @@ class Haxby2001Dataset(HttpDataset):
         mask file.
         'mask_house_little': string list. Paths to nifti ventral temporal
         mask file.
-<<<<<<< HEAD
-=======
-
-    
->>>>>>> 426d4f5... DOC: more docstring changes.
     """
     def __init__(self, data_dir=None, simple=False):
         super(Haxby2001Dataset, self).__init__(data_dir=data_dir)

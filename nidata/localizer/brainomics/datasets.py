@@ -18,20 +18,6 @@ from ...core._utils.compat import _basestring, _urllib
 class BrainomicsDataset(HttpDataset):
     """Download and load Brainomics Localizer dataset (94 subjects).
 
-    "The Functional Localizer is a simple and fast acquisition
-    procedure based on a 5-minute functional magnetic resonance
-    imaging (fMRI) sequence that can be run as easily and as
-    systematically as an anatomical scan. This protocol captures the
-    cerebral bases of auditory and visual perception, motor actions,
-    reading, language comprehension and mental calculation at an
-    individual level. Individual functional maps are reliable and
-    quite precise. The procedure is decribed in more detail on the
-    Functional Localizer page."
-    (see http://brainomics.cea.fr/localizer/)
-
-    "Scientific results obtained using this dataset are described in
-    Pinel et al., 2007" [1]
-
     Parameters
     ----------
     contrasts: list of str
@@ -130,26 +116,6 @@ class BrainomicsDataset(HttpDataset):
 
     verbose: int
         verbose level (0 means no message).
-
-    Returns
-    -------
-    data: Bunch
-        Dictionary-like object, the interest attributes are :
-        'cmaps': string list
-            Paths to nifti contrast maps
-        'tmaps' string list (if 'get_tmaps' set to True)
-            Paths to nifti t maps
-        'masks': string list
-            Paths to nifti files corresponding to the subjects individual masks
-        'anats': string
-            Path to nifti files corresponding to the subjects structural images
-
-    References
-    ----------
-    [1] Pinel, Philippe, et al.
-        "Fast reproducible identification and large-scale databasing of
-         individual functional cognitive networks."
-        BMC neuroscience 8.1 (2007): 91.
 
     """
 

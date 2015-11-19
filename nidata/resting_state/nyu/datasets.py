@@ -27,8 +27,6 @@ class NyuRestDataset(HttpDataset):
     data_dir: string, optional
         Path of the data directory. Used to force data storage in a specified
         location. Default: None
-
-    
     """
 
     def fetch(self, n_subjects=None, sessions=[1], resume=True,

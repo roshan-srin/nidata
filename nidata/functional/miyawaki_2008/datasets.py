@@ -14,7 +14,7 @@ from ...core.datasets import HttpDataset
 
 class Miyawaki2008Dataset(HttpDataset):
     """Download and loads Miyawaki et al. 2008 dataset (153MB)
-
+    No content to run.
     Returns
     -------
     data: Bunch
@@ -27,23 +27,6 @@ class Miyawaki2008Dataset(HttpDataset):
             Path to nifti mask file to define target volume in visual
             cortex
 
-    References
-    ----------
-    `Visual image reconstruction from human brain activity
-    using a combination of multiscale local image decoders
-    <http://www.cell.com/neuron/abstract/S0896-6273%2808%2900958-6>`_,
-    Miyawaki, Y., Uchida, H., Yamashita, O., Sato, M. A.,
-    Morito, Y., Tanabe, H. C., ... & Kamitani, Y. (2008).
-    Neuron, 60(5), 915-929.
-
-    Notes
-    -----
-    This dataset is available on the `brainliner website
-    <http://brainliner.jp/data/brainliner-admin/Reconstruct>`_
-
-    See `additional information
-    <http://www.cns.atr.jp/dni/en/downloads/
-    fmri-data-set-for-visual-image-reconstruction/>`_
     """
     def fetch(self, url=None, resume=True, force=False, verbose=1):
 

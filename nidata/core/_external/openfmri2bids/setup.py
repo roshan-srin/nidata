@@ -1,4 +1,4 @@
-"""
+f"""
 Convert OpenfMRI dataset to BIDS.
 """
 from setuptools import find_packages, setup

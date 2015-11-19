@@ -22,8 +22,19 @@ class ICBM152Dataset(HttpDataset):
         standard location. Default: None (meaning: default)
     url: string, optional
         Download URL of the dataset. Overwrite the default URL.
-    """
 
+    Returns
+    -------
+    data: sklearn.datasets.base.Bunch
+        dictionary-like object, interest keys are:
+        "t1", "t2", "t2_relax", "pd": anatomical images obtained with the
+        given modality (resp. T1, T2, T2 relaxometry and proton
+        density weighted). Values are file paths.
+        "gm", "wm", "csf": segmented images, giving resp. gray matter,
+        white matter and cerebrospinal fluid. Values are file paths.
+        "eye_mask", "face_mask", "mask": use these images to mask out
+        parts of mri images. Values are file paths.
+    """
     def fetch(self, url=None, resume=True, force=False, verbose=1):
         if url is None:
             url = "http://www.bic.mni.mcgill.ca/~vfonov/icbm/2009/" \
