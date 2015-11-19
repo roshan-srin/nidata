@@ -22,35 +22,16 @@ class Haxby2001Dataset(HttpDataset):
         Path of the data directory. Used to force data storage in a specified
         location. Default: None
 
-    Returns
-    -------
-    data: sklearn.datasets.base.Bunch
-        Dictionary-like object, interest attributes are:
-        'func': string.  Path to nifti file with bold data.
-        'session_target': string. Path to text file containing session and
-        target data.
-        'mask': string. Path to nifti mask file.
-        'session': string. Path to text file containing labels (can be used
-        for LeaveOneLabelOut cross validation for example).
-
-
-    OR
-
-
-    Download and loads complete haxby dataset
-
     Parameters
     ----------
     data_dir: string, optional
         Path of the data directory. Used to force data storage in a specified
         location. Default: None
-
     n_subjects: int, optional
         Number of subjects, from 1 to 6.
 
     fetch_stimuli: boolean, optional
-        Indicate if stimuli images must be downloaded. They will be presented
-        as a dictionnary of categories.
+        Indicate if stimuli images must be downloaded. 
 
     Returns
     -------
@@ -67,26 +48,6 @@ class Haxby2001Dataset(HttpDataset):
         mask file.
         'mask_house_little': string list. Paths to nifti ventral temporal
         mask file.
-
-    References
-    ----------
-    `Haxby, J., Gobbini, M., Furey, M., Ishai, A., Schouten, J.,
-    and Pietrini, P. (2001). Distributed and overlapping representations of
-    faces and objects in ventral temporal cortex. Science 293, 2425-2430.`
-
-    Notes
-    -----
-    PyMVPA provides a tutorial making use of this dataset:
-    http://www.pymvpa.org/tutorial.html
-
-    More information about its structure:
-    http://dev.pymvpa.org/datadb/haxby2001.html
-
-    See `additional information
-    <http://www.sciencemag.org/content/293/5539/2425>`
-
-    Run 8 in subject 5 does not contain any task labels.
-    The anatomical image for subject 6 is unavailable.
     """
     def __init__(self, data_dir=None, simple=False):
         super(Haxby2001Dataset, self).__init__(data_dir=data_dir)

@@ -16,7 +16,6 @@ class MNI152Dataset(HttpDataset):
     -------
     mni152_template: nibabel object corresponding to the template
 
-
     References
     ----------
 

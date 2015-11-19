@@ -28,7 +28,7 @@ class MSDLDataset(HttpDataset):
     Returns
     -------
     data: sklearn.datasets.base.Bunch
-        Dictionary-like object, the interest attributes are :
+        Dictionary-the interest attributes are :
         - 'labels': str. Path to csv file containing labels.
         - 'maps': str. path to nifti file containing regions definition.
 
