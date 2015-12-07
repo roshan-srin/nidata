@@ -26,11 +26,6 @@ def seconds2prettystring(t, ndigits=0):
     ndigits: int (default: 0)
         how many digits are used to show time in seconds (after
         the decimal sign '.')
-
-    Returns
-    s: str
-        time represented as a string HH:MM:SS
-
     '''
     if t < 0:
         return '-' + seconds2prettystring(-t, ndigits)

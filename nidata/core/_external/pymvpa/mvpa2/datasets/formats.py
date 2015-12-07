@@ -57,14 +57,6 @@ def to_lightsvm_format(dataset, out, targets_attr='targets',
       output featureIndex:featureValue ... featureIndex:featureValue
 
     where ``output`` is specific for a given domain:
-
-    regression
-      float number
-    binary
-      integer labels from {-1, 1}
-    multiclass
-      integer labels from {1..ds.targets_attr.nunique}
-
     """
     targets_a = dataset.sa[targets_attr]
     targets = targets_a.value

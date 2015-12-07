@@ -16,11 +16,6 @@ from ...core.fetchers import get_dataset_dir
 
 class HarvardOxfordDataset(HttpDataset):
     """Load Harvard-Oxford parcellation from FSL if installed or download it.
-
-    This function looks up for Harvard Oxford atlas in the system and load it
-    if present. If not, it downloads it and store it in NIDATA_PATH
-    directory.
-
     Parameters
     ==========
     atlas_name: string
@@ -42,11 +37,6 @@ class HarvardOxfordDataset(HttpDataset):
         If True, split every symmetric region in left and right parts.
         Effectively doubles the number of regions. Default: False.
         Not implemented for probabilistic atlas (*-prob-* atlases)
-
-    Returns
-    =======
-    regions: nibabel.Nifti1Image
-        regions definition, as a label image.
     """
     atlas_items = ("cort-maxprob-thr0-1mm", "cort-maxprob-thr0-2mm",
                    "cort-maxprob-thr25-1mm", "cort-maxprob-thr25-2mm",

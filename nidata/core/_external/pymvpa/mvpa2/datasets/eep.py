@@ -31,14 +31,6 @@ def eep_dataset(samples, targets=None, chunks=None):
     targets, chunks : sequence or scalar or None
       Values are pass through to `Dataset.from_wizard()`. See its documentation
       for more information.
-
-    Returns
-    -------
-    Dataset
-      Besides is usual attributes (e.g. targets, chunks, and a mapper). The
-      returned dataset also includes feature attributes associating each same
-      with a channel (by id), and a specific timepoint -- based on information
-      read from the EEP data.
     """
     if isinstance(samples, str):
         # open the eep file

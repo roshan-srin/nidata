@@ -12,30 +12,17 @@ from ...core.datasets import HttpDataset
 
 class Craddock2012Dataset(HttpDataset):
     """Download and return file names for the Craddock 2012 parcellation
-
-    The provided images are in MNI152 space.
-
     Parameters
     ----------
     data_dir: string
-        directory where data should be downloaded and unpacked.
 
     url: string
-        url of file to download.
-
-    resume: bool
-        whether to resumed download of a partly-downloaded file.
-
-    verbose: int
-        verbose level (0 means no message).
 
     Returns
     -------
     data: sklearn.datasets.base.Bunch
         dictionary-like object, keys are:
-        scorr_mean, tcorr_mean,
-        scorr_2level, tcorr_2level,
-        random
+        scorr_mean, tcorr_mean
 
     References
     ----------

@@ -47,10 +47,6 @@ class Collectable(object):
         value : arbitrary (see derived implementations)
           The actual value of this attribute.
         name : str
-          Name of the collectable under which it should be available in its
-          respective collection.
-        doc : str
-          Documentation about the purpose of this collectable.
         """
         if doc is not None:
             # to prevent newlines in the docstring

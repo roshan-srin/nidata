@@ -36,14 +36,6 @@ class IFS(IterativeFeatureSelection):
     important features. Starting with an empty feature set the dataset measure
     is first computed for each single feature. A number of features is selected
     based on the resulting data measure map (using an `ElementSelector`).
-
-    Next the dataset measure is computed again using each feature in addition
-    to the already selected feature set. Again the `ElementSelector` is used to
-    select more features.
-
-    For each feature selection the transfer error on some testdatset is
-    computed. This procedure is repeated until a given `StoppingCriterion`
-    is reached.
     """
     def __init__(self,
                  fmeasure,

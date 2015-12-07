@@ -34,12 +34,7 @@ class IndexedCollectable(Collectable):
 
     * ConditionalAttribute: conditional storage
     * Parameter: attribute with validity ranges.
-
-    `IndexedAttributes` instances are to be automagically grouped into
-    corresponding collections for each class by `StateCollector`
-    metaclass, i.e. it would be done on a class creation (i.e. not per
-    each instance).  Upon instance creation those collection templates
-    will be copied for the instance.
+    
     """
 
     _instance_index = 0

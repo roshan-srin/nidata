@@ -18,8 +18,7 @@ class MSDLDataset(HttpDataset):
     Parameters
     ----------
     data_dir: string, optional
-        Path of the data directory. Used to force data storage in a specified
-        location. Default: None
+        Default: None
 
     url: string, optional
         Override download URL. Used for test only (or if you setup a mirror of

@@ -27,15 +27,6 @@ def get_dataset_dir(dataset_name, data_dir=None, env_vars=[],
     dataset_name: string
         The unique name of the dataset.
 
-    data_dir: string, optional
-        Path of the data directory. Used to force data storage in a specified
-        location. Default: None
-
-    env_vars: list of string, optional
-        Add environment variables searched even if data_dir is not None.
-
-    verbose: int, optional
-        verbosity level (0 means no message).
 
     Returns
     -------

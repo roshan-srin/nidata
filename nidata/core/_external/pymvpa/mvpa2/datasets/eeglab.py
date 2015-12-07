@@ -6,191 +6,141 @@
 #   copyright and license terms.
 #
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ##
-"""Support for EEGLAB's electrode-time series text file format.
-
-This module offers functions to import data from EEGLAB_ text files.
-
-.. _EEGLAB: http://sccn.ucsd.edu/eeglab/
-"""
+"""Support for the binary EEP file format for EEG data"""
 
 __docformat__ = 'restructuredtext'
 
 import numpy as np
-import os
+from mvpa2.datasets import Dataset
+from mvpa2.misc.io import DataReader
 
-from mvpa2.datasets.base import Dataset
-from mvpa2.mappers.flatten import FlattenMapper
+def eep_dataset(samples, targets=None, chunks=None):
+    """Create a dataset using an EEP binary file as source.
 
-# restrict public interface to not misguide sphinx
-__all__ = [ 'eeglab_dataset' ]
+    EEP files are used by *eeprobe* a software for analysing even-related
+    potentials (ERP), which was developed at the Max-Planck Institute for
+    Cognitive Neuroscience in Leipzig, Germany.
 
-def _looks_like_filename(s):
-    if os.path.exists(s):
-        return True
-    return len(s) <= 256 and not '\n' in s
+      http://www.ant-neuro.com/products/eeprobe
+    """
+    
+    if isinstance(samples, str):
+        # open the eep file
+        eb = EEPBin(samples)
+    elif isinstance(samples, EEPBin):
+        # nothing special
+        eb = samples
+    else:
+        raise ValueError("eep_dataset takes the filename of an "
+              "EEP file or a EEPBin object as 'samples' argument.")
 
-def eeglab_dataset(samples):
-    '''Make a Dataset instance from EEGLAB input data
-
-    Parameters
-    ----------
-    samples: str
-        Filename of EEGLAB text file
-
-    Returns
-    -------
-    ds: mvpa2.base.dataset.Dataset
-        Dataset with the contents of the input file
-    '''
-    if not isinstance(samples, basestring):
-        raise ValueError("Samples should be a string")
-
-    if _looks_like_filename(samples):
-        if not os.path.exists(samples):
-            raise ValueError("Input looks like a filename, but file"
-                                " %s does not exist" % samples)
-        with open(samples) as f:
-            samples = f.read()
-
-    lines = samples.split('\n')
-    samples = []
-    cur_sample = None
-
-    for i, line in enumerate(lines):
-        if not line:
-            continue
-        if i == 0:
-            # first line contains the channel names
-            channel_labels = line.split()
-            n_channels = len(channel_labels)
-        else:
-            # first value is the time point, the remainders the value 
-            # for each channel
-            values = map(float, line.split())
-            t = values[0]  # time 
-            eeg = values[1:] # values for each electrode
-
-            if len(eeg) != n_channels:
-                raise ValueError("Line %d: expected %d values but found %d" %
-                                    (n_channels, len(eeg)))
-
-            if cur_sample is None or t < prev_t:
-                # new sample
-                cur_sample = []
-                samples.append(cur_sample)
-
-            cur_sample.append((t, eeg))
-            prev_t = t
-
-    # get and verify number of elements in each dimension
-    n_samples = len(samples)
-    n_timepoints_all = map(len, samples)
-
-    n_timepoints_unique = set(n_timepoints_all)
-    if len(n_timepoints_unique) != 1:
-        raise ValueError("Different number of time points in different"
-                            "samples: found %d different lengths" %
-                            len(n_timepoints_unique))
-
-    n_timepoints = n_timepoints_all[0]
-
-    shape = (n_samples, n_timepoints, n_channels)
-
-    # allocate space for data
-    data = np.zeros(shape)
-
-    # make a list of all channels and timepoints
-    channel_array = np.asarray(channel_labels)
-    timepoint_array = np.asarray([samples[0][i][0]
-                                  for i in xrange(n_timepoints)])
-
-    dts = timepoint_array[1:] - timepoint_array[:-1]
-    if not np.all(dts == dts[0]):
-        raise ValueError("Delta time points are different")
-
-    # put the values in the data array
-    for i, sample in enumerate(samples):
-        for j, (t, values) in enumerate(sample):
-            # check that the time is the same
-            if i > 0 and timepoint_array[j] != t:
-                raise ValueError("Sample %d, time point %s is different "
-                                 "than the first sample (%s)" %
-                                 (i, t, timepoint_array[j]))
-
-            for k, value in enumerate(values):
-                data[i, j, k] = value
-
-    samples = None # and let gc do it's job
-
-    # make a Dataset instance with the data
-    ds = Dataset(data)
-
-    # append a flatten_mapper to go from 3D (sample X time X channel)
-    # to 2D (sample X (time X channel))
-    flatten_mapper = FlattenMapper(shape=shape[1:], space='time_channel_indices')
-    ds = ds.get_mapped(flatten_mapper)
-
-    # make this a 3D array of the proper size
-    channel_array_3D = np.tile(channel_array, (1, n_timepoints, 1))
-    timepoint_array_3D = np.tile(np.reshape(timepoint_array, (-1, 1)),
-                                            (1, 1, n_channels))
-
-    # for consistency use the flattan_mapper defined above to 
-    # flatten channel and timepoint names as well
-    ds.fa['channelids'] = flatten_mapper.forward(channel_array_3D).ravel()
-    ds.fa['timepoints'] = flatten_mapper.forward(timepoint_array_3D).ravel()
-
-    # make some dynamic properties
-    # XXX at the moment we don't have propert 'protection' in case
-    # the feature space is sliced in a way so that some channels and/or
-    # timepoints occur more often than others 
-    _eeglab_set_attributes(ds)
-
+    # init dataset
+    ds = Dataset.from_channeltimeseries(
+            eb.data, targets=targets, chunks=chunks, t0=eb.t0, dt=eb.dt,
+            channelids=eb.channels)
     return ds
 
-def _eeglab_set_attributes(ds):
-    setattr(ds.__class__, 'nchannels', property(
-            fget=lambda self: len(set(self.fa['time_channel_indices'][:, 1]))))
-    setattr(ds.__class__, 'ntimepoints', property(
-            fget=lambda self: len(set(self.fa['time_channel_indices'][:, 0]))))
-
-    setattr(ds.__class__, 'channelids', property(
-            fget=lambda self: np.unique(self.fa['channelids'].value)))
-    setattr(ds.__class__, 'timepoints', property(
-            fget=lambda self: np.unique(self.fa['timepoints'].value)))
 
 
-    setattr(ds.__class__, 't0', property(
-                    fget=lambda self: np.min(self.fa['timepoints'].value)))
+class EEPBin(DataReader):
+    """Read-access to binary EEP files.
 
-    def _get_dt(ds):
-        ts = np.unique(ds.fa['timepoints'].value)
-        if len(ts) >= 1:
-            delta = ts[1:] - ts[:-1]
-            if len(np.unique(delta)) == 1:
-                return delta[0]
-        return float(numpy.nan)
+    EEP files are used by *eeprobe* a software for analysing even-related
+    potentials (ERP), which was developed at the Max-Planck Institute for
+    Cognitive Neuroscience in Leipzig, Germany.
 
-    setattr(ds.__class__, 'dt', property(fget=lambda self: _get_dt(self)))
+      http://www.ant-neuro.com/products/eeprobe
 
-    def selector(f, xs):
-        if type(f) in (list, tuple):
-            flist = f
-            f = lambda x:x in flist
+    EEP files consist of a plain text header and a binary data block in a
+    single file. The header starts with a line of the form
 
-        return np.nonzero(map(f, xs))[0]
+    ';%d %d %d %g %g' % (Nchannels, Nsamples, Ntrials, t0, dt)
 
-    # attributes for getting certain time points or channels ids
-    # the argument f should be either be a function, or a list or tuple
-    setattr(ds.__class__, 'get_features_by_timepoints', property(
-                            fget=lambda self: lambda f: selector(f,
-                                            self.fa['timepoints']),
-                            doc='Given a filter function f returns the '
-                                'indices of features for which f(x) holds '
-                                ' for each x in timepoints'))
-    setattr(ds.__class__, 'get_features_by_channelids', property(
-                            fget=lambda self: lambda f: selector(f,
-                                            self.fa['channelids']),
-                            doc='Given a filter function f returns the '
-                                'indices of features for which f(x) holds '
-                                ' for each x in channelids'))
+    where Nchannels, Nsamples, Ntrials are the numbers of channels, samples
+    per trial and trials respectively. t0 is the time of the first sample
+    of a trial relative to the stimulus onset and dt is the sampling interval.
+
+    The binary data block consists of single precision floats arranged in the
+    following way::
+
+        <trial1,channel1,sample1>,<trial1,channel1,sample2>,...
+        <trial1,channel2,sample1>,<trial1,channel2,sample2>,...
+        .
+        <trial2,channel1,sample1>,<trial2,channel1,sample2>,...
+        <trial2,channel2,sample1>,<trial2,channel2,sample2>,...
+    """
+    def __init__(self, source):
+        """Read EEP file and store header and data.
+
+        Parameters
+        ----------
+        source : str
+          Filename.
+        """
+        # init base class
+        DataReader.__init__(self)
+        # temp storage of number of samples
+        nsamples = None
+        # non-critical header components stored in temp dict
+        hdr = {}
+
+        infile = open(source, "rb")
+
+        # read file the end of header of EOF
+        while True:
+            # one line at a time
+            try:
+                line = infile.readline().decode('ascii')
+            except UnicodeDecodeError:
+                break
+
+            # stop if EOH or EOF
+            if not line or line.startswith(';EOH;'):
+                break
+
+            # no crap!
+            line = line.strip()
+
+            # all but first line as colon
+            if not line.count(':'):
+                # top header
+                l = line.split()
+                # extract critical information
+                self._props['nchannels'] = int(l[0][1:])
+                self._props['ntimepoints'] = int(l[1])
+                self._props['t0'] = float(l[3])
+                self._props['dt'] = float(l[4])
+                nsamples = int(l[2])
+            else:
+                # simply store non-critical extras
+                l = line.split(':')
+                key = l[0].lstrip(';')
+                value = ':'.join(l[1:])
+                hdr[key] = value
+
+        # post process channel name info -> list
+        if hdr.has_key('channels'):
+            self._props['channels'] = hdr['channels'].split()
+
+        self._data = \
+            np.reshape(np.fromfile(infile, dtype='f'), \
+                (nsamples,
+                 self._props['nchannels'],
+                 self._props['ntimepoints']))
+
+        # cleanup
+        infile.close()
+
+
+    nchannels = property(fget=lambda self: self._props['nchannels'],
+                         doc="Number of channels")
+    ntimepoints  = property(fget=lambda self: self._props['ntimepoints'],
+                         doc="Number of data timepoints")
+    nsamples   = property(fget=lambda self: self._data.shape[0],
+                         doc="Number of trials/samples")
+    t0        = property(fget=lambda self: self._props['t0'],
+                         doc="Relative start time of sampling interval")
+    dt        = property(fget=lambda self: self._props['dt'],
+                         doc="Time difference between two adjacent samples")
+    channels  = property(fget=lambda self: self._props['channels'],
+                         doc="List of channel names")

@@ -208,14 +208,6 @@ def random_samples(dataset, npertarget, targets_attr='targets'):
     ----------
     dataset : Dataset
     npertarget : int or list
-      If an `int` is given, the specified number of samples is randomly
-      chosen from the group of samples sharing a unique target value. Total
-      number of selected samples: npertarget x len(uniquetargets).
-      If a `list` is given of length matching the unique target values, it
-      specifies the number of samples chosen for each particular unique
-      target.
-    targets_attr : str, optional
-
     Returns
     -------
     Dataset

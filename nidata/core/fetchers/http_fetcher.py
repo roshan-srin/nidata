@@ -559,6 +559,25 @@ def copytree(src, dst, symlinks=False, ignore=None):
 
 class HttpFetcher(Fetcher):
 
+    '''
+    Doc String for HttpFetcher:
+
+    HttpFetcher is used for fetching data from a repository on a website 
+    and converts it to processing datasets on the human brain.
+
+    Parameters
+    ----------
+
+    Take a datatype that is a list and fetch various functions.
+    Enter a username and password
+    Fill in username and password in strings
+
+    Returns
+    ----------
+    anat, diff, func, rest, psyc, bgnd
+    converts raw data
+    '''
+
     def __init__(self, data_dir=None, username=None, passwd=None):
         super(HttpFetcher, self).__init__(data_dir=data_dir)
         self.username = username

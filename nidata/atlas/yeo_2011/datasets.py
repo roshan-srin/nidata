@@ -15,21 +15,15 @@ from ...core.datasets import HttpDataset
 class Yeo2011Dataset(HttpDataset):
     """Download and return file names for the Yeo 2011 parcellation.
 
-    The provided images are in MNI152 space.
-
     Parameters
     ----------
     data_dir: string
-        directory where data should be downloaded and unpacked.
 
     url: string
-        url of file to download.
 
     resume: bool
-        whether to resumed download of a partly-downloaded file.
 
     verbose: int
-        verbose level (0 means no message).
 
     Returns
     -------
@@ -38,13 +32,6 @@ class Yeo2011Dataset(HttpDataset):
 
         - "thin_7", "thick_7": 7-region parcellations,
           fitted to resp. thin and thick template cortex segmentations.
-
-        - "thin_17", "thick_17": 17-region parcellations.
-
-        - "colors_7", "colors_17": colormaps (text files) for 7- and 17-region
-          parcellation respectively.
-
-        - "anat": anatomy image.
 
     Notes
     -----
