@@ -64,7 +64,7 @@ class HarvardOxfordDataset(HttpDataset):
                 return rv
 
         if atlas_name not in self.atlas_items:
-            raise ValueError("Invalid atlas name: {0}. Please chose an atlas "
+             raise ValueError("Invalid atlas name: {0}. Please chose an atlas "
                              "among:\n{1}".format(
                                  atlas_name, '\n'.join(self.atlas_items)))
 
@@ -137,4 +137,5 @@ def fetch_harvard_oxford(atlas_name, data_dir=None, symmetric_split=False,
     return HarvardOxfordDataset(data_dir=data_dir).fetch(atlas_name=atlas_name,
                                                          symmetric_split=symmetric_split,
                                                          resume=resume, verbose=verbose)
+
 
